@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: quiz-app
-        image: quiz-app:latest  # Replace with your actual image tag after building
+        image: hemanthreddy739.azurecr.io/quiz-app:latest  
         ports:
         - containerPort: 3000
         env:
@@ -32,14 +32,14 @@ spec:
           initialDelaySeconds: 10  # Wait 10s before first check
           periodSeconds: 10        # Check every 10s
           timeoutSeconds: 5        # Timeout after 5s
-          failureThreshold: 10     # Allow up to 10 failures (100s total) for 50-60s startup
+          failureThreshold: 20     # Allow up to 20 failures (200s total) for 120s startup
           successThreshold: 1
         # Readiness Probe: Checks if the app is ready to serve traffic
         readinessProbe:
           httpGet:
             path: /api/v1/health
             port: 3000
-          initialDelaySeconds: 5   # Start checking early
+          initialDelaySeconds: 0   # Start immediately after startup probe succeeds
           periodSeconds: 10        # Check every 10s
           timeoutSeconds: 5
           failureThreshold: 3      # Mark not ready after 3 failures
@@ -49,7 +49,7 @@ spec:
           httpGet:
             path: /api/v1/health
             port: 3000
-          initialDelaySeconds: 60  # Wait until after startup (adjust based on startup time)
+          initialDelaySeconds: 0  # Start immediately after startup probe succeeds
           periodSeconds: 30        # Check every 30s
           timeoutSeconds: 5
           failureThreshold: 3      # Restart after 3 failures
