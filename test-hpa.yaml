@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ab-test
+  namespace: hpa-demo
+spec:
+  restartPolicy: Never
+  containers:
+  - name: ab
+    image: jordi/ab
+    command:
+      - ab
+    args:
+      - "-n"
+      - "200000"
+      - "-c"
+      - "300"
+      - "http://nginx-service.hpa-demo.svc.cluster.local/"
