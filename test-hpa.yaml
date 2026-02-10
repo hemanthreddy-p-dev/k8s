@@ -6,7 +6,7 @@ metadata:
 spec:
   restartPolicy: Never
   containers:
-  - name: load
+  - name: test
     image: busybox
     command:
       - sh
