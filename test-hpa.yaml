@@ -1,18 +1,23 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: ab-test
+  name: test-hpa
   namespace: hpa-demo
 spec:
   restartPolicy: Never
   containers:
-  - name: ab
-    image: jordi/ab
+  - name: load
+    image: busybox
     command:
-      - ab
-    args:
-      - "-n"
-      - "200000"
-      - "-c"
-      - "300"
-      - "http://nginx-service.hpa-demo.svc.cluster.local/"
+      - sh
+      - -c
+      - |
+        COUNT=0
+        while [ $COUNT -lt 2500 ]; do
+          for i in $(seq 1 100); do
+            wget -q -O /dev/null http://nginx-service.hpa-demo.svc.cluster.local/ &
+          done
+          wait
+          COUNT=$((COUNT+1))
+          sleep 2
+        done
