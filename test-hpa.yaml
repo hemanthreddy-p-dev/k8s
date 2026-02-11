@@ -1,23 +1,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: test-hpa
+  name: hpa-test
   namespace: hpa-demo
 spec:
-  restartPolicy: Never
   containers:
-  - name: test
-    image: busybox
-    command:
-      - sh
-      - -c
-      - |
-        COUNT=0
-        while [ $COUNT -lt 2500 ]; do
-          for i in $(seq 1 100); do
-            wget -q -O /dev/null http://nginx-service.hpa-demo.svc.cluster.local/ &
-          done
-          wait
-          COUNT=$((COUNT+1))
-          sleep 2
-        done
+  - name: ubuntu
+    image: ubuntu
+    command: ["sleep", "infinity"]
+  restartPolicy: Always
