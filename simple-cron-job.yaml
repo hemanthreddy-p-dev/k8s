@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: simple-cronjob
+spec:
+  schedule: "*/1 * * * *"   # Every 1 minute
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: cron-container
+              image: busybox
+              command: ["sh", "-c", "date"]
